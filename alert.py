@@ -44,11 +44,9 @@ def checkInstore(zip, name, sku, link):
         return
 
     if 'data' not in r:
-        print("no data")
         return
 
     if(len(r['data']['results']) == 0):
-        print("no results")
         return
 
     result = r['data']['results']
