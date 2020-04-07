@@ -42,7 +42,7 @@ def checkInstore(zip, name, sku, link):
     url = 'https://availability.dickssportinggoods.com/ws/v2/omni/stores?addr={}&radius=100&uom=imperial&lob=dsg&sku={}&res=locatorsearch&qty=1'.format(zip, sku)
     try:
         r = requests.get(url, timeout=5, headers=config.header, proxies=config.proxy).json()
-        print(r)
+        #print(r)
     except:
         checkInstore(zip, name, sku, link)
         return
@@ -66,8 +66,8 @@ def parseLocation(name, link, sku, result, zip):
     message = time.strftime('%a %H:%M:%S') + " Curbside\nItem: {}\nAvailability: {}\nlocation: {} \t zipcode: {}\n{}".format(name, str(qty), location, zipcode, link)
     if(int(ats) > 0):
         discord.sendDiscord(message, 'curbside', sku, zip)
-    else:
-        print(message)
+    #else:
+        #print(message)
 
 
 if __name__ == "__main__":
