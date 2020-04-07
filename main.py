@@ -25,13 +25,17 @@ with open('links.txt','r') as f:
         sku = bsObj.find("ul", {"class":"product-numbers"}).findAll("li")[1].find("span").text
         skus.append(sku)
 
-
         print("item: {} \t sku: {} \n link: {}".format(name, sku, link))
+
+zipList = []
+with open('zipcode.txt','r') as f:
+    zipList = f.read().splitlines()
 
 def main():
     while True:
-        for i in range(len(links)):
-            checkInstore('97236', names[i], skus[i], links[i])
+        for zip in zipList:
+            for i in range(len(links)):
+                    checkInstore(zip, names[i], skus[i], links[i])
 
 
 def checkInstore(zip, name, sku, link):
@@ -51,19 +55,16 @@ def checkInstore(zip, name, sku, link):
 
     result = r['data']['results']
     for i in range(len(result)):
-        parseLocation(name, link, sku, result[i])
+        parseLocation(name, link, sku, result[i], zip)
 
-def parseLocation(name, link, sku, result):
+def parseLocation(name, link, sku, result, zip):
     zipcode = result['store']['zip']
     location = result['store']['street1']
     qty = result['skus'][0]['qty']
 
     message = time.strftime('%a %H:%M:%S') + " Curbside\nItem: {}\nAvailability: {}\nlocation: {} \t zipcode: {}\n{}".format(name, str(qty), location, zipcode, link)
     print(message)
-    if '11465449' in sku or '16380346' in sku:
-        discord.sendDiscord(message, "curbside1")
-    else:
-        discord.sendDiscord(message, "curbside2")
+    discord.sendDiscord(message, 'curbside', sku, zip)
 
 
 if __name__ == "__main__":
