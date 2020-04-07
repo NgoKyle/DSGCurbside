@@ -61,10 +61,13 @@ def parseLocation(name, link, sku, result, zip):
     zipcode = result['store']['zip']
     location = result['store']['street1']
     qty = result['skus'][0]['qty']
+    ats = qty['ats']
 
     message = time.strftime('%a %H:%M:%S') + " Curbside\nItem: {}\nAvailability: {}\nlocation: {} \t zipcode: {}\n{}".format(name, str(qty), location, zipcode, link)
-    print(message)
-    discord.sendDiscord(message, 'curbside', sku, zip)
+    if(int(ats) > 0):
+        discord.sendDiscord(message, 'curbside', sku, zip)
+    else:
+        print(message)
 
 
 if __name__ == "__main__":

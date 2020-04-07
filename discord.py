@@ -2,7 +2,6 @@ from discord_webhook import DiscordWebhook
 
 def sendDiscord(message, buyType, sku, zipcode):
     #default error url
-    url = 'https://discordapp.com/api/webhooks/697146323924811856/2POHtN42U2ouMp3loe4u704JwspP9vxwpPNdtFGlqpaLw8rSEmldq4f71gKTTU_wwrcP'
     if "curbside" in buyType:
         if sku in ('16380346', '11465449'): #adjustable
             print("adjustable")
@@ -16,9 +15,12 @@ def sendDiscord(message, buyType, sku, zipcode):
                 url = 'https://discordapp.com/api/webhooks/697146053409112266/1_QjYxznO04s4-M3A6oME8GYuHA8RscTj6IoilZm3zpCEwxWN-iZlro66RL4jobJJDxF'
             else: #other
                 url = 'https://discordapp.com/api/webhooks/697209785308807200/N43rRgJLgO-BgXhue9WY3Bs5tFlJTE-m6SXnqjRJRHJ0Qp_xoC0l6h0H5enu3WkaY5rA'
+
+        else:
+            print("non-adjustable")
+            url = 'https://discordapp.com/api/webhooks/696488119364747274/akRhi50mQwDDVBrydTNUMd-m-7V4JH1D6ZHUz5cP2Sdft30BH1oee23x1A7FowoxB_LU'
     else:
-        print("non-adjustable")
-        url = 'https://discordapp.com/api/webhooks/696488119364747274/akRhi50mQwDDVBrydTNUMd-m-7V4JH1D6ZHUz5cP2Sdft30BH1oee23x1A7FowoxB_LU'
+        url = 'https://discordapp.com/api/webhooks/697146323924811856/2POHtN42U2ouMp3loe4u704JwspP9vxwpPNdtFGlqpaLw8rSEmldq4f71gKTTU_wwrcP'
 
     webhook = DiscordWebhook(url=url,content=message)
     webhook.execute()
