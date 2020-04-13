@@ -13,16 +13,20 @@ names = []
 #get SKUs, Products name from URL
 with open('links.txt','r') as f:
     for line in f:
-        link = line.strip()
-        links.append(link)
+        try:
+            link = line.strip()
 
-        r = requests.get(link)
-        bsObj = BeautifulSoup(r.text, 'html.parser')
+            r = requests.get(link)
+            bsObj = BeautifulSoup(r.text, 'html.parser')
 
-        name = bsObj.find("h1", {'itemprop':'name'}).text
+            name = bsObj.find("h1", {'itemprop':'name'}).text
+            sku = bsObj.find("ul", {"class":"product-numbers"}).findAll("li")[1].find("span").text
+        except:
+            print("bad url: {}".format(link))
+            continue
+
         names.append(name)
-
-        sku = bsObj.find("ul", {"class":"product-numbers"}).findAll("li")[1].find("span").text
+        links.append(link)
         skus.append(sku)
 
         print("item: {} \t sku: {} \n link: {}".format(name, sku, link))
@@ -42,7 +46,7 @@ def checkInstore(zip, name, sku, link):
     url = 'https://availability.dickssportinggoods.com/ws/v2/omni/stores?addr={}&radius=100&uom=imperial&lob=dsg&sku={}&res=locatorsearch&qty=1'.format(zip, sku)
     try:
         r = requests.get(url, timeout=5, headers=config.header, proxies=config.proxy).json()
-        #print(r)
+        print(zip, r)
     except:
         checkInstore(zip, name, sku, link)
         return
